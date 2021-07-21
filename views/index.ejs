@@ -22,17 +22,25 @@
 <body style="overflow-x: hidden;font-family: 'iranyekan';" id="body">
   <div id="wrapper" style="padding-top: 20px;">
   <div class="row">
-    <div class="col-3" style="margin-right: 5%;">
+    <div class="col-lg-3 col-md-6 col-7" style="margin-right: 5%;">
       <label for="address" class="mb-2">آدرس کیف پول را وارد کنید: </label>
       <input type="tel" id="walletAddress" class="form-control">
     </div>
-    <div class="col-2" style="margin-top: 2%;">
+    <div class="col-lg-2 col-md-6 col-4" style="margin-top: 2%;">
       <button class="btn btn-success" onclick="search()">جست و جو کن</button>
+    </div>
+    <div class="col-lg-2 col-md-6 col-11">
+      <label for="address" class="mb-2">موجودی ترون: </label>
+      <input id="trxBalance" class="form-control" disabled>
+    </div>
+    <div class="col-lg-2 col-md-6 col-11">
+      <label for="address" class="mb-2">موجودی تتر: </label>
+      <input id="usdtBalance" class="form-control" disabled>
     </div>
   </div>
 
   <div class="row justify-content-center mt-5" >
-    <div class="col-11">
+    <div class="col-lg-11 col-12">
       <table class="table" id="table" >
         <thead>
           <th>ارز جابجا شده</th>
@@ -71,7 +79,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
   <script src="/blockui.js"></script>
   <script>
-     
     function search() {
       const walletAddress = $('#walletAddress').val();
       blockUI($('#body'));
@@ -80,10 +87,11 @@
         method: 'post',
         url: '/getData',
         data: { walletAddress },
-        success(data) {
+        success({ trnasactions, trxBalance, usdtBalance }) {
           $('#tbody').empty();
 
-          for (const transaction of data) {
+          console.log(trnasactions)
+          for (const transaction of trnasactions) {
             $('#tbody').append(`
               <tr>
                 <td>${transaction.token_info ? '(USDT)' : '(TRX)'}</td>
@@ -100,6 +108,9 @@
               </tr>
             `);
           }
+
+          $('#trxBalance').val(trxBalance);
+          $('#usdtBalance').val(usdtBalance);
         
           $('#body').unblock();
         }, 
