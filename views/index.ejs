@@ -1,84 +1,120 @@
 <!DOCTYPE html>
 <html lang="en" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
   <link rel="stylesheet" href="/IRANYekan/css/fontiran.css">
   <title>مشاهده اطلاعات کیف پول</title>
   <style type="text/css">
-    html, body {
+    html,
+    body {
       height: 100%;
       margin: 0;
     }
 
     #wrapper {
-      min-height: 100%; 
+      min-height: 100%;
       z-index: 5;
     }
-</style>
+  </style>
 </head>
-<body style="overflow-x: hidden;font-family: 'iranyekan';" id="body">
-  <div id="wrapper" style="padding-top: 20px;">
-  <div class="row">
-    <div class="col-lg-3 col-md-6 col-7" style="margin-right: 5%;">
-      <label for="address" class="mb-2">آدرس کیف پول را وارد کنید: </label>
-      <input type="tel" id="walletAddress" class="form-control">
-    </div>
-    <div class="col-lg-2 col-md-6 col-4" style="margin-top: 2%;">
-      <button class="btn btn-success" onclick="search()">جست و جو کن</button>
-    </div>
-    <div class="col-lg-2 col-md-6 col-11">
-      <label for="address" class="mb-2">موجودی ترون: </label>
-      <input id="trxBalance" class="form-control" disabled>
-    </div>
-    <div class="col-lg-2 col-md-6 col-11">
-      <label for="address" class="mb-2">موجودی تتر: </label>
-      <input id="usdtBalance" class="form-control" disabled>
-    </div>
-  </div>
 
-  <div class="row justify-content-center mt-5" >
-    <div class="col-lg-11 col-12">
-      <table class="table" id="table" >
-        <thead>
-          <th>ارز جابجا شده</th>
-          <th>زمان</th>
-          <th>مقدار</th>
-          <th>فرستنده</th>
-          <th>گیرنده</th>
-          <th>آیدی تراکنش</th>
-          <th>عملیات</th>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-      </table>
+<body style="overflow-x: hidden;font-family: 'iranyekan';text-align: right;" id="body">
+  <div id="wrapper" style="padding-top: 20px;">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-7" style="margin-right: 5%;">
+        <label for="address" class="mb-2">آدرس کیف پول را وارد کنید: </label>
+        <input type="tel" id="walletAddress" class="form-control">
+      </div>
+      <div class="col-lg-2 col-md-6 col-4" style="margin-top: 2%;">
+        <button class="btn btn-success" onclick="search()">جست و جو کن</button>
+      </div>
+      <div class="col-lg-2 col-md-6 col-11">
+        <label for="address" class="mb-2">موجودی ترون: </label>
+        <input id="trxBalance" class="form-control" disabled>
+      </div>
+      <div class="col-lg-2 col-md-6 col-11">
+        <label for="address" class="mb-2">موجودی تتر: </label>
+        <input id="usdtBalance" class="form-control" disabled>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-5 pb-5">
+      <div class="col-lg-11 col-12">
+        <table class="table datatable" id="table" style="text-align: center;">
+          <thead>
+            <th>ارز جابجا شده</th>
+            <th>زمان</th>
+            <th>مقدار</th>
+            <th>فرستنده</th>
+            <th>گیرنده</th>
+            <th>آیدی تراکنش</th>
+            <th>عملیات</th>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
   <!-- Modal -->
-<div class="modal fade" id="txIDModal" tabindex="-1" role="dialog" aria-labelledby="txIDModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">آیدی تراکنش</h5>
-      </div>
-      <div class="modal-body text-center">
-        <span id="trans-id"></span>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+  <div class="modal fade" id="txIDModal" tabindex="-1" role="dialog" aria-labelledby="txIDModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">آیدی تراکنش</h5>
+        </div>
+        <div class="modal-body text-center">
+          <span id="trans-id"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
   <script src="/blockui.js"></script>
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
   <script>
+    const options = {
+      "aLengthMenu": [
+        [5, 10, 25, -1],
+        [5, 10, 25, "All"]
+      ],
+      "iDisplayLength": 10,
+
+      "language": {
+        "sProcessing": "درحال جست و جو ...",
+        "sLengthMenu": "نمایش _MENU_ موارد",
+        "sZeroRecords": "موردی برای نمایش یافت نشد",
+        "sInfo": "نمایش مورد _START_ تا مورد _END_ از _TOTAL_ موارد",
+        "sInfoEmpty": "موردی یافت نشد",
+        "sInfoFiltered": "(جست و جو در بین _MAX_ مورد)",
+        "sInfoPostFix": "",
+        "sSearch": "جست و جو:",
+        "sUrl": "",
+        "order": [[0, "desc"]],
+        "oPaginate": {
+          "sFirst": "ابتدا",
+          "sPrevious": "قبل",
+          "sNext": "بعد",
+          "sLast": "انتها"
+        }
+      },
+      "bDestroy": true
+    };
+    
     function search() {
       const walletAddress = $('#walletAddress').val();
       blockUI($('#body'));
@@ -88,9 +124,9 @@
         url: '/getData',
         data: { walletAddress },
         success({ trnasactions, trxBalance, usdtBalance }) {
+          $('.datatable').DataTable().destroy();
           $('#tbody').empty();
 
-          console.log(trnasactions)
           for (const transaction of trnasactions) {
             $('#tbody').append(`
               <tr>
@@ -111,14 +147,15 @@
 
           $('#trxBalance').val(trxBalance);
           $('#usdtBalance').val(usdtBalance);
-        
+
+          $('.datatable').DataTable(options);
           $('#body').unblock();
-        }, 
+        },
         error(err) {
           alert(err.responseText);
           $('#body').unblock();
-        } 
-      })
+        }
+      });
     }
 
     function showTransModal(transID) {
@@ -127,4 +164,5 @@
     }
   </script>
 </body>
+
 </html>

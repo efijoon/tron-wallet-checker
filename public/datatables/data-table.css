@@ -1,0 +1,19 @@
+.main-content {
+    width: 100% !important;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+}
+
+.dataTables_info,
+.dataTables_length {
+    float: right;
+}
+
+#files_list_paginate,
+.dataTables_filter {
+    float: left;
+}
+
+.th_text {
+    color: black;
+}

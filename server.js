@@ -46,6 +46,9 @@ app.post('/getData', async (req, res) => {
 
   let convertedTransactions = [];
   allTransactions.data.forEach(item => {
+    if(! item) return;
+    if(! item.raw_data) return;
+    
     const transData = item.raw_data.contract[0].parameter.value;
 
     if(item.raw_data.contract[0].type === 'TransferContract') {
