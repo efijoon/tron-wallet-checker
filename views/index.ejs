@@ -145,8 +145,10 @@
             `);
           }
 
-          $('#trxBalance').val(trxBalance);
-          $('#usdtBalance').val(usdtBalance);
+          const trxBalanceArr = String(trxBalance).split('.');
+          const usdtBalanceArr = String(usdtBalance).split('.');
+          $('#trxBalance').val(`${formatPrice(trxBalanceArr[0])}.${trxBalanceArr[1]}`);
+          $('#usdtBalance').val(`${formatPrice(usdtBalanceArr[0])}.${usdtBalanceArr[1]}`);
 
           $('.datatable').DataTable(options);
           $('#body').unblock();
@@ -161,6 +163,12 @@
     function showTransModal(transID) {
       $('#trans-id').text(transID);
       $('#txIDModal').modal('show');
+    }
+
+    function formatPrice(price) {
+      if (!price) return 0;
+
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   </script>
 </body>
